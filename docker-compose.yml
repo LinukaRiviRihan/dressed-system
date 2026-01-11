@@ -1,0 +1,63 @@
+services:
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: ./ApiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      - designservice
+      - quoteservice
+
+  designservice:
+    image: ${DOCKER_REGISTRY-}designservice
+    build:
+      context: ./DesignService
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8080   
+
+  quoteservice:
+    image: ${DOCKER_REGISTRY-}quoteservice
+    build:
+      context: ./QuoteService
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+
+  communicationservice:
+    image: ${DOCKER_REGISTRY-}communicationservice
+    build:
+      context: ./CommunicationService
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+
+  orderservice:
+    image: ${DOCKER_REGISTRY-}orderservice
+    build:
+      context: ./OrderService
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+
+  frontend:
+    image: ${DOCKER_REGISTRY-}frontend
+    build:
+      context: ./Client   
+      dockerfile: Dockerfile
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WDS_SOCKET_PORT=0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Client:/app        
+      - /app/node_modules
+    stdin_open: true
+    depends_on:
+      - apigateway

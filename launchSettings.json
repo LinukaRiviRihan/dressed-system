@@ -1,0 +1,24 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "apigateway",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "serviceActions": {
+        "apigateway": "StartDebugging",
+        "orderservice": "StartWithoutDebugging",
+        "designservice": "StartWithoutDebugging",
+        "quoteservice": "StartWithoutDebugging",
+        "communicationservice": "StartWithoutDebugging",
+        "frontend": "StartWithoutDebugging"
+      }
+    }
+  }
+}
